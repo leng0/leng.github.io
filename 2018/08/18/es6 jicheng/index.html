@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javascript,Es6," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="防抖你是否在日常开发中遇到一个问题，在滚动事件中需要做个复杂计算或实现一个按钮的防二次点击操作。 这些需求都可以通过函数的防抖来实现。尤其是第一个，如歌在频繁的事件回掉中做复杂加us安很有可能导致页面卡顿，不如将多次计算合为一次，只在一个精确点操作。因为防抖的轮子很多，也不要自己写，直接使用underscore的源码。">
+<meta name="keywords" content="javascript,Es6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="防抖 节流 继承">
+<meta property="og:url" content="http://yoursite.com/2018/08/18/es6 jicheng/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="防抖你是否在日常开发中遇到一个问题，在滚动事件中需要做个复杂计算或实现一个按钮的防二次点击操作。 这些需求都可以通过函数的防抖来实现。尤其是第一个，如歌在频繁的事件回掉中做复杂加us安很有可能导致页面卡顿，不如将多次计算合为一次，只在一个精确点操作。因为防抖的轮子很多，也不要自己写，直接使用underscore的源码。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/es6test.jpg">
+<meta property="og:updated_time" content="2018-09-06T10:35:18.132Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="防抖 节流 继承">
+<meta name="twitter:description" content="防抖你是否在日常开发中遇到一个问题，在滚动事件中需要做个复杂计算或实现一个按钮的防二次点击操作。 这些需求都可以通过函数的防抖来实现。尤其是第一个，如歌在频繁的事件回掉中做复杂加us安很有可能导致页面卡顿，不如将多次计算合为一次，只在一个精确点操作。因为防抖的轮子很多，也不要自己写，直接使用underscore的源码。">
+<meta name="twitter:image" content="http://yoursite.com/images/es6test.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/18/es6 jicheng/"/>
+
+
+
+
+
+  <title>防抖 节流 继承 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/18/es6 jicheng/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">防抖 节流 继承</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-18T12:09:23+08:00">
+                2018-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>你是否在日常开发中遇到一个问题，在滚动事件中需要做个复杂计算或实现一个按钮的防二次点击操作。</p>
+<p>这些需求都可以通过函数的防抖来实现。尤其是第一个，如歌在频繁的事件回掉中做复杂加us安很有可能导致页面卡顿，不如将多次计算合为一次，只在一个精确点操作。因为防抖的轮子很多，也不要自己写，直接使用underscore的源码。</p>
+ <a id="more"></a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* underscore 防抖函数，返回战术连续调用时，空闲时间必须大于或等于wait，function 才会执行</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* @param &#123;function&#125; func    回调函数</span></span><br><span class="line"><span class="comment">* @param &#123;number&#125; wait      表示时间窗口的间隔</span></span><br><span class="line"><span class="comment">* @param &#123;boolean&#125; immediate 设置为ture 时，是否立即调用函数</span></span><br><span class="line"><span class="comment">* @return &#123;function&#125;        返回客户调用函数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">_.debounce = <span class="function"><span class="keyword">function</span>(<span class="params">func,wait,immediate</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> timeout, args, context, timestamp, result;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> later = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">//现在和上一次时间戳比较</span></span><br><span class="line">        <span class="keyword">var</span> last = _.now() - timestamp;</span><br><span class="line">        <span class="comment">// 如果当前间隔时间少于设定时间且大于0就重新设置定时器</span></span><br><span class="line">        <span class="keyword">if</span>(last &lt; wait &amp;&amp; last &gt;=<span class="number">0</span>)&#123;</span><br><span class="line">            timeout = setTimeout(later, wait - last);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//否则的话就是时间到了执行回调函数</span></span><br><span class="line">            timeout = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">if</span>(!immediate)&#123;</span><br><span class="line">                result = func.apply(context,args);</span><br><span class="line">                <span class="keyword">if</span>(!timeout) context = args = <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        context = <span class="keyword">this</span>;</span><br><span class="line">        args = <span class="built_in">arguments</span>;</span><br><span class="line">        <span class="comment">//获得时间戳</span></span><br><span class="line">        timestamp = _.now();</span><br><span class="line">        <span class="comment">//如果定时器不存在且立即执行函数</span></span><br><span class="line">        <span class="keyword">var</span> callNow = immediate &amp;&amp; !timeout;</span><br><span class="line">        <span class="comment">// 如果定时器不存在就创建一个</span></span><br><span class="line">        <span class="keyword">if</span>(!tiemout) timeout = setTimeout(later,wait);</span><br><span class="line">        <span class="keyword">if</span>(callNow)&#123;</span><br><span class="line">            <span class="comment">//如果需要立即执行函数通过apply执行</span></span><br><span class="line">            result = func.apply(context,args);</span><br><span class="line">            context = args = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整体函数实现不难总结一下。</p>
+<ul>
+<li>对于按钮防点击来说：一旦我开始一个定时器，只要我定时器还在，不管你怎么点击都不会执行回调函数。一旦定时器结束并设置为null，就可以再次点击。</li>
+<li>对于延时执行函数来说： 每次调用防抖函数都会判断本次调用和之前的时间间隔，如果小于需要的时间间隔，就会重新创建一个定时器，并且定时器的延时为设定时间减去之前的时间间隔，一旦时间到了，就会执行相应的回调函数。</li>
+</ul>
+<h2 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h2><p>防抖和节流的本质是不一样的。防抖是将多次执行变为最后一次执行，节流是将多次执行变成隔一段时间执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* underscore 节流函数，返回函数连续调用时，func执行频率限定为 次 / wait</span></span><br><span class="line"><span class="comment">* @param &#123;function&#125;    func   回调函数</span></span><br><span class="line"><span class="comment">* @param &#123;number&#125;      wait   表示时间窗口间隔</span></span><br><span class="line"><span class="comment">* @param &#123;object&#125;      options 如果想忽略开始函数的调用，传入&#123;leading：false&#125;</span></span><br><span class="line"><span class="comment">*                              如果想忽略结尾函数的调用，传入&#123;trailing：false&#125;</span></span><br><span class="line"><span class="comment">*                              两者不能共存否则函数不能执行</span></span><br><span class="line"><span class="comment">* @return &#123;function&#125;           返回客户调用函数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">_.throttle = <span class="function"><span class="keyword">function</span> (<span class="params">func, wait, options</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> context, args, result;</span><br><span class="line">    <span class="keyword">var</span> timeout = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//之前的时间戳</span></span><br><span class="line">    <span class="keyword">var</span> pervious = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 如果options 没传则设为空对象</span></span><br><span class="line">    <span class="keyword">if</span>(!options) options = &#123;&#125;;</span><br><span class="line">    <span class="comment">//定时器回调函数</span></span><br><span class="line">    <span class="keyword">var</span> later = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">// 如果设置了 leading，将previous设为0；</span></span><br><span class="line">        <span class="comment">// 用于下面函数的第一个if判断</span></span><br><span class="line">        previous = options.leading === <span class="literal">false</span> ? <span class="number">0</span> : _.now();</span><br><span class="line">        <span class="comment">//置空一是为了防止内存泄漏，二是为了下面定时器判断</span></span><br><span class="line">        timeout = <span class="literal">null</span>;</span><br><span class="line">        result = func.apply(context,args);</span><br><span class="line">        <span class="keyword">if</span>(!timeout)context = args = <span class="literal">null</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">// 获得当前时间戳</span></span><br><span class="line">        <span class="keyword">var</span> now = -.now();</span><br><span class="line">        <span class="comment">// 首次进入前者肯定为true</span></span><br><span class="line">        <span class="comment">// 如果需要第一次不执行函数</span></span><br><span class="line">        <span class="comment">// 就将上次时间戳设为当前的</span></span><br><span class="line">        <span class="comment">// 这样在计算下来remaining 的值会大于0</span></span><br><span class="line">        <span class="keyword">if</span>(!previous &amp;&amp; options.leading === <span class="literal">false</span>)previous = now;</span><br><span class="line">        <span class="comment">//计算剩余时间</span></span><br><span class="line">        <span class="keyword">var</span> remaining = wait - (now - previous);</span><br><span class="line">        context = <span class="keyword">this</span>;</span><br><span class="line">        args = <span class="built_in">arguments</span>;</span><br><span class="line">        <span class="comment">//如果当前调用已经大于上次调用的时间 + wait</span></span><br><span class="line">        <span class="comment">// 或者用户手动调了时间</span></span><br><span class="line">        <span class="comment">// 如果设置trailing 只会进入这个条件</span></span><br><span class="line">        <span class="comment">// 如果没有设置leading 那么第一次会进入这个条件</span></span><br><span class="line">        <span class="comment">// 还有，你可能觉得开启了定时器那么不应该进入这个if条件</span></span><br><span class="line">        <span class="comment">// 其实还是会进入的。因为定时器的延迟</span></span><br><span class="line">        <span class="comment">// 并不是准确时间，很可能你设置了2秒</span></span><br><span class="line">        <span class="comment">// 但是他要2.2秒触发，这时候才会进入这个条件</span></span><br><span class="line">        <span class="keyword">if</span>(remaining &lt;= <span class="number">0</span> || remaining &gt; wait)&#123;</span><br><span class="line">            <span class="comment">//如果存在定时器就会被清理掉好否则会调用二次回调</span></span><br><span class="line">            <span class="keyword">if</span>(timeout)&#123;</span><br><span class="line">                clearTimeout(timeout);</span><br><span class="line">                timeout = <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            previous = now;</span><br><span class="line">            result = func.apply(context,args);</span><br><span class="line">            <span class="keyword">if</span>(!timeout) context  = args = <span class="literal">null</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(!timeout &amp;&amp; options.trailing !== <span class="literal">false</span>)&#123;</span><br><span class="line">            <span class="comment">//判断是否设置了定时器和trailing</span></span><br><span class="line">            <span class="comment">//如果没有就开启一个定时器</span></span><br><span class="line">            <span class="comment">// 并且不能同时设置leading trailing</span></span><br><span class="line">            timeout = setTimout(later,remaining);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>在ES5中，我们可以使用如下方法解决继承的问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Super</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Super.prototype.getNumber = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sub</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="keyword">let</span> s = <span class="keyword">new</span> Sub()</span><br><span class="line">Sub.prototype = <span class="built_in">Object</span>.create(Super.prototype, &#123;</span><br><span class="line">    <span class="keyword">constructor</span> : &#123;</span><br><span class="line">        value: Sub,</span><br><span class="line">        enumerable: <span class="literal">false</span>,</span><br><span class="line">        writable: <span class="literal">true</span>,</span><br><span class="line">        configurable: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>以上继承实现思路就是将子类的原型设置为父类的原型</p>
+<p>在ES6中，我们可以通过class 语法轻松解决这个问题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">myDate</span> <span class="keyword">extends</span> <span class="title">Date</span></span>&#123;</span><br><span class="line">    test()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.getTime()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> myDate = <span class="keyword">new</span> myDate()</span><br><span class="line">myDate.test()</span><br></pre></td></tr></table></figure>
+<p>但是ES6不是所有浏览器都兼容，所以我们需要Babel来编译这段代码。<br>如果你使编译过的代码 myDate() 有报错</p>
+<p><img src="/images/es6test.jpg" alt="“error”"></p>
+<p>因为在js底层有限制，如果不是由Date构造出来的实例的话，是不能调用Date里的函数。所以侧面说明，ES6中class 继承与ES5中方法不同</p>
+<p>既然底层限制了实例必须有Date 构造出来，那么我们可以改变思路实现继承</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyDate</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">MyDate.prototype.test = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.getTime()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(d,MyDate,prototype)</span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(MyDate.prototype,<span class="built_in">Date</span>.prototype)</span><br></pre></td></tr></table></figure>
+<p>以上继承实现思路：先创建父类实例=&gt; 改变实例原先的<em>proto</em> 转而连接到子类的prototype =&gt; 子类的 prototype 的 <em>proto</em> 改为父类的 prototype。</p>
+<p>通过以上方法实现的继承就可以完美解决 JS 底层的这个限制。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/Es6/" rel="tag"># Es6</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/14/kaobei mokuai/" rel="next" title="深浅拷贝 模块化">
+                <i class="fa fa-chevron-left"></i> 深浅拷贝 模块化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/18/vue-1/" rel="prev" title="Vue 笔记(1)">
+                Vue 笔记(1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">leng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#防抖"><span class="nav-number">1.</span> <span class="nav-text">防抖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节流"><span class="nav-number">2.</span> <span class="nav-text">节流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">3.</span> <span class="nav-text">继承</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">leng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

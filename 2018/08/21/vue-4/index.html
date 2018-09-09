@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="事件处理之前讲过v-on指令可以绑定事件  123456789101112&amp;lt;div id = &quot;exampel-1&quot;&amp;gt;   &amp;lt;button v-on:click=&quot;handleFun&quot;&amp;gt;ClickHere&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;// jslet vm = new Vue(&amp;#123;    el : &quot;#example-1&quot;,    metho">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue笔记(4)">
+<meta property="og:url" content="http://yoursite.com/2018/08/21/vue-4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="事件处理之前讲过v-on指令可以绑定事件  123456789101112&amp;lt;div id = &quot;exampel-1&quot;&amp;gt;   &amp;lt;button v-on:click=&quot;handleFun&quot;&amp;gt;ClickHere&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;// jslet vm = new Vue(&amp;#123;    el : &quot;#example-1&quot;,    metho">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-26T13:51:08.611Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue笔记(4)">
+<meta name="twitter:description" content="事件处理之前讲过v-on指令可以绑定事件  123456789101112&amp;lt;div id = &quot;exampel-1&quot;&amp;gt;   &amp;lt;button v-on:click=&quot;handleFun&quot;&amp;gt;ClickHere&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;// jslet vm = new Vue(&amp;#123;    el : &quot;#example-1&quot;,    metho">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/21/vue-4/"/>
+
+
+
+
+
+  <title>Vue笔记(4) | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/21/vue-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue笔记(4)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T22:03:28+08:00">
+                2018-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>之前讲过v-on指令可以绑定事件</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id = <span class="string">"exampel-1"</span>&gt;</span><br><span class="line">   &lt;button v-on:click=<span class="string">"handleFun"</span>&gt;ClickHere&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>div&gt;</span><br><span class="line"><span class="comment">// js</span></span><br><span class="line"><span class="keyword">let</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    el : <span class="string">"#example-1"</span>,</span><br><span class="line">    methods : &#123;</span><br><span class="line">        handleFun : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'you click'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+<p>如果需要再内联语句处理器中访问原始的DOM事件。可以用特殊变量￥event把它传递进函数中。</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;button @click= <span class="string">"send('hello',$event)"</span>&gt;</span><br><span class="line">   Submit</span><br><span class="line">&lt;button&gt;</span><br><span class="line"><span class="comment">// js</span></span><br><span class="line">methods:&#123;</span><br><span class="line">    send: <span class="function"><span class="keyword">function</span>(<span class="params">message,event</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(event) event.preventDefault();</span><br><span class="line">        alert(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="事件修饰符"><a href="#事件修饰符" class="headerlink" title="事件修饰符"></a>事件修饰符</h2><p> 在事件处理程序中调用event.preventDefault() 或event.stopPropagation() 是常见的需求。我们需要的是，方法中只有纯粹的数据逻辑，而不是去处理DOM事件细节。</p>
+<p> 为了解决这个问题，我们可以使用事件修饰符，之前说修饰符是由 ‘.’ 打头的指令后缀表示的。</p>
+<ul>
+<li>stop 阻止单击事件继续传播</li>
+<li>prevent 阻止默认事件</li>
+<li>capture 事件捕获</li>
+<li>self 只有在事件在元素本身上触发才会有效即不能冒泡和捕获</li>
+<li><p>once 点击事件只会触发一次</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;a v-on: click.stop=<span class="string">"doThis"</span>&gt;no send&lt;<span class="regexp">/a&gt;/</span><span class="regexp">/阻止单击事件传播</span></span><br><span class="line"><span class="regexp">&lt;form v-on:sumbit.prevent="onSubmit"&gt;&lt;/</span>form&gt;<span class="comment">//提交时间不在重载页面</span></span><br><span class="line">&lt;a v-on:click.stop.prevent=<span class="string">"doThat"</span>&gt;&lt;/a&gt;<span class="comment">//修饰符可以串联</span></span><br><span class="line">&lt;div v-on:click.capture=<span class="string">"doThis"</span>&gt;.....&lt;<span class="regexp">/div&gt;/</span><span class="regexp">/添加事件监听时使用事件捕获，即元素自身触发的事件先在此处处理，然后才交给内部元素进行处理</span></span><br><span class="line"><span class="regexp">&lt;div v-on:click.self="doThat"&gt;.....&lt;/</span>div&gt;<span class="comment">//是当前元素自身时触发处理函数。即事件不是从内部元素触发的。</span></span><br></pre></td></tr></table></figure>
+<p>要注意： 在使用修饰符的时候，顺序很重要，相应的代码会以同样的顺序产生。因此，使用v-on:click.prevent.self 会阻止所有的点击，而v-on:click.self.prevent只会阻止对元素自身的点击。</p>
+<h2 id="按键修饰符"><a href="#按键修饰符" class="headerlink" title="按键修饰符"></a>按键修饰符</h2><p>这个是用来监听键盘事件的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input v-on:keyup<span class="number">.13</span>=<span class="string">"submit"</span>&gt;<span class="comment">//监听keyCode为13的事件。</span></span><br></pre></td></tr></table></figure>
+<p>当然针对常用的keyCode可以使用别名</p>
+<ul>
+<li>enter</li>
+<li>tab</li>
+<li>delete</li>
+<li>esc</li>
+<li>space</li>
+<li>up</li>
+<li>down</li>
+<li>left</li>
+<li>right</li>
+</ul>
+<p>如果没有合适的还可以自定义按键修饰别名</p>
+</li>
+</ul>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.config.keyCodes.f1 = <span class="number">112</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="系统修饰键"><a href="#系统修饰键" class="headerlink" title="系统修饰键"></a>系统修饰键</h2><p>  可以使用如下修饰符来实现仅在按下相应的鼠标或者事件的监听器。</p>
+<ul>
+<li>ctrl</li>
+<li>alt </li>
+<li>shift</li>
+<li><p>meta</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;input @key.alt<span class="number">.67</span>=<span class="string">"clear"</span>&gt; <span class="comment">// Alt + c</span></span><br><span class="line">&lt;div @click.ctrl=<span class="string">"handle"</span>&gt;click&lt;<span class="regexp">/div&gt;/</span><span class="regexp">/ Ctrl + click</span></span><br></pre></td></tr></table></figure>
+<p>所有HTML中监听的事件，当viewmodel 被销毁，所有的时间处理器会被自动销毁。</p>
+<h2 id="表单输入绑定"><a href="#表单输入绑定" class="headerlink" title="表单输入绑定"></a>表单输入绑定</h2></li>
+</ul>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;select v-model=<span class="string">"selected"</span>&gt;</span><br><span class="line">   &lt;option v-<span class="keyword">for</span> = <span class="string">"option in options"</span> v-bind: value=<span class="string">"option.value"</span>&gt;</span><br><span class="line">   &lt;<span class="regexp">/option&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>select&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    el : <span class="string">"example"</span>,</span><br><span class="line">    data : &#123;</span><br><span class="line">        selected : <span class="string">"A"</span>,</span><br><span class="line">        options: [</span><br><span class="line">            &#123;<span class="attr">text</span>: <span class="string">'one'</span>, <span class="attr">value</span>: <span class="string">'A'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">text</span> : <span class="string">'two'</span>, <span class="attr">value</span>: <span class="string">'B'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">text</span> : <span class="string">'three'</span>, <span class="attr">value</span>: <span class="string">'C'</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/20/vue-3/" rel="next" title="vue笔记(3)">
+                <i class="fa fa-chevron-left"></i> vue笔记(3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/21/vue-5/" rel="prev" title="Vue笔记(5)">
+                Vue笔记(5) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">leng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事件处理"><span class="nav-number">1.</span> <span class="nav-text">事件处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件修饰符"><span class="nav-number">2.</span> <span class="nav-text">事件修饰符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按键修饰符"><span class="nav-number">3.</span> <span class="nav-text">按键修饰符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统修饰键"><span class="nav-number">4.</span> <span class="nav-text">系统修饰键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单输入绑定"><span class="nav-number">5.</span> <span class="nav-text">表单输入绑定</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">leng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

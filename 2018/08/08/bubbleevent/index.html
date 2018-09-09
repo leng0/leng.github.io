@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="事件冒泡123456789101112131415161718192021222324252627.wrapper&amp;#123;    width: 300px;    height: 300px;    background：red;&amp;#125;.content&amp;#123;    width: 200px;    heightt: 200px;    background: green;&amp;#125">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript的事件冒泡捕获委托">
+<meta property="og:url" content="http://yoursite.com/2018/08/08/bubbleevent/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="事件冒泡123456789101112131415161718192021222324252627.wrapper&amp;#123;    width: 300px;    height: 300px;    background：red;&amp;#125;.content&amp;#123;    width: 200px;    heightt: 200px;    background: green;&amp;#125">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/color.jpg">
+<meta property="og:updated_time" content="2018-08-09T02:50:09.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript的事件冒泡捕获委托">
+<meta name="twitter:description" content="事件冒泡123456789101112131415161718192021222324252627.wrapper&amp;#123;    width: 300px;    height: 300px;    background：red;&amp;#125;.content&amp;#123;    width: 200px;    heightt: 200px;    background: green;&amp;#125">
+<meta name="twitter:image" content="http://yoursite.com/images/color.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/08/bubbleevent/"/>
+
+
+
+
+
+  <title>JavaScript的事件冒泡捕获委托 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/08/bubbleevent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript的事件冒泡捕获委托</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T15:09:33+08:00">
+                2018-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="事件冒泡"><a href="#事件冒泡" class="headerlink" title="事件冒泡"></a>事件冒泡</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.wrapper&#123;</span><br><span class="line">    width: <span class="number">300</span>px;</span><br><span class="line">    height: <span class="number">300</span>px;</span><br><span class="line">    background：red;</span><br><span class="line">&#125;</span><br><span class="line">.content&#123;</span><br><span class="line">    width: <span class="number">200</span>px;</span><br><span class="line">    heightt: <span class="number">200</span>px;</span><br><span class="line">    background: green;</span><br><span class="line">&#125;</span><br><span class="line">.box&#123;</span><br><span class="line">    width: <span class="number">100</span>px;</span><br><span class="line">    height: <span class="number">100</span>px;</span><br><span class="line">    background: yellow;</span><br><span class="line">&#125;</span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>= <span class="string">"wrapper"</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"content"</span>&gt;</span><br><span class="line">        &lt;div <span class="class"><span class="keyword">class</span></span>= <span class="string">"box"</span>&gt;&lt;/div&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>div&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> wrapper = <span class="built_in">document</span>.getElementByTagName(<span class="string">'div'</span>)[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">var</span> content = <span class="built_in">document</span>.getElementByTagName(<span class="string">'div'</span>)[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">var</span> box = <span class="built_in">document</span>.getElementByTagName(<span class="string">'div'</span>)[<span class="number">0</span>];</span><br><span class="line">wrapper.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">consoe=le,log(<span class="string">'wrapper'</span></span>)</span>&#123;&#125;,<span class="literal">false</span>));</span><br><span class="line">content.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">consoe=le,log(<span class="string">'content'</span></span>)</span>&#123;&#125;,<span class="literal">false</span>));</span><br><span class="line">box.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">consoe=le,log(<span class="string">'box'</span></span>)</span>&#123;&#125;,<span class="literal">false</span>));</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><img src="/images/color.jpg" alt="“Bubble”"></p>
+<p>特别的是，当我们点击box的时候会把三个事件都触发了，点击content的时候，会把content和wrapper都触发。这就叫事件冒泡</p>
+<p>事件冒泡：结构上的而非视觉上的嵌套关系的元素，会存在事件冒泡的功能，即同一事件，自子元素冒泡向父元素。（自底向上），如题，点击box子元素的时候，它会一级一级的冒向父元素，自地上向，最后冒向wrapper，结构上的，而非视觉上的。事件冒泡是存在于结构逻辑上的，并不是视觉逻辑上的。</p>
+<h2 id="事件捕获（只有谷歌有）"><a href="#事件捕获（只有谷歌有）" class="headerlink" title="事件捕获（只有谷歌有）"></a>事件捕获（只有谷歌有）</h2><p>声明：一个对象的一个时间类型，只能存在一个时间类型。将冒泡转为捕获很简单，只要false转为 true就ok。</p>
+<p>时间捕获：结构上嵌套关心的元素，会在时间捕获的功能，即同一事件，自父元素捕获至子元素（时间源元素）。</p>
+<p>从以上例子来看，点击box会先打印wrapper然后是content最后box。</p>
+<p>IE没有捕获最新版本火狐和Opera有。</p>
+<h2 id="注意同一个对象的同一个事件类型绑定了两个函数，让两个函数分别遵循事件捕获和事件冒泡，它们会先捕获然后先冒泡"><a href="#注意同一个对象的同一个事件类型绑定了两个函数，让两个函数分别遵循事件捕获和事件冒泡，它们会先捕获然后先冒泡" class="headerlink" title="注意同一个对象的同一个事件类型绑定了两个函数，让两个函数分别遵循事件捕获和事件冒泡，它们会先捕获然后先冒泡"></a>注意同一个对象的同一个事件类型绑定了两个函数，让两个函数分别遵循事件捕获和事件冒泡，它们会先捕获然后先冒泡</h2><p>将以上代码复制一次，点击box。</p>
+<p>捕获—&gt;捕获—&gt;事件执行—&gt;冒泡—&gt;冒泡—&gt;事件执行。</p>
+<p>另外有些事件 冒泡功能，如：focus，blur等。</p>
+<h2 id="取消冒泡和阻止默认事件"><a href="#取消冒泡和阻止默认事件" class="headerlink" title="取消冒泡和阻止默认事件"></a>取消冒泡和阻止默认事件</h2><p>事件对象，在每个事件处理函数，可以填一个形参e，系统会自动往里面传一个东西，叫做事件对象。e 上面有很多属性，记录很多事件发生时关键性数据，如鼠标坐标，事件类型等</p>
+<p>事件对象上面有一个方法可以阻止冒泡事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event.stopPropagetion();</span><br></pre></td></tr></table></figure>
+<p>但不支持IE9以下。<br>IE能用的： e.cancelBubble = true;</p>
+<p>现在我们来封装一个方法来兼容各种浏览器，用于阻止默认事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">stopBubble</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(event.stopPropagetion)&#123;</span><br><span class="line">        event.stopPropagetion();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        event.cancelBubble = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="阻止默认事件"><a href="#阻止默认事件" class="headerlink" title="阻止默认事件"></a>阻止默认事件</h2><p>默认事件，即是浏览器默认在一定情况下会自动触发的事件，例如鼠标右击产生菜单，如果我们不需要就可以阻止默认事件。</p>
+<ol>
+<li>return false 方式；只有绑定事件的时候，才能有这种取消。 attachEvent 不能用，需要以下方法</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.contextmenu = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>event.preventDefault() W3cn标准，IE9以下不兼容。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.oncontextmenu = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>兼容IE， event.returnValue = false;</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.oncontextmenu = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    e.returnValue = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再来一个兼容性的方法来取消默认事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cancelHandler</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(event.preventDefault)&#123;</span><br><span class="line">        event.preventDefault();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        event.returnValue = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>a标签作为按钮是，要取消它的默认事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="事件对象（IE浏览器）"><a href="#事件对象（IE浏览器）" class="headerlink" title="事件对象（IE浏览器）"></a>事件对象（IE浏览器）</h2><p>在IE中事件对象会存在window上面，需要兼容如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">div.onclick = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    e = <span class="built_in">window</span>.event || e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>事件源对象，事件对象上面有一个属性会记录事件源对象，用来记录究竟是谁触发这事件。</p>
+<p>火狐： event.target;<br>IE： event.srcElement;<br>谷歌以上都有</p>
+<h2 id="事件委托"><a href="#事件委托" class="headerlink" title="事件委托"></a>事件委托</h2><p>背景： 一个ul里边有个很多个里，点击一个li，输出对应的内容，后期还会继续添加。</p>
+<p>利用事件源对象进行编程。ul的区域大小，是由李决定的，当我们点击第一个li，就会冒泡给ul。我们绑定ul就ok。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ul = <span class="built_in">document</span>.getElemntsByTagName(<span class="string">'ul'</span>)[<span class="number">0</span>];</span><br><span class="line">ul.onclick = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> event = e || <span class="built_in">window</span>.event;</span><br><span class="line">    <span class="keyword">var</span> target = event.target || event.srcElement;</span><br><span class="line">    <span class="built_in">console</span>.log(target.innerText);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>优点：</p>
+<ol>
+<li>性能 不需要循环所有的元素一个个绑定事件。</li>
+<li>灵活 当有新的子元素时不需要重新绑定事件。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/08/time-line/" rel="next" title="js时间线">
+                <i class="fa fa-chevron-left"></i> js时间线
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/js Built-in type/" rel="prev" title="js的内置类型">
+                js的内置类型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">leng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事件冒泡"><span class="nav-number">1.</span> <span class="nav-text">事件冒泡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件捕获（只有谷歌有）"><span class="nav-number">2.</span> <span class="nav-text">事件捕获（只有谷歌有）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意同一个对象的同一个事件类型绑定了两个函数，让两个函数分别遵循事件捕获和事件冒泡，它们会先捕获然后先冒泡"><span class="nav-number">3.</span> <span class="nav-text">注意同一个对象的同一个事件类型绑定了两个函数，让两个函数分别遵循事件捕获和事件冒泡，它们会先捕获然后先冒泡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取消冒泡和阻止默认事件"><span class="nav-number">4.</span> <span class="nav-text">取消冒泡和阻止默认事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻止默认事件"><span class="nav-number">5.</span> <span class="nav-text">阻止默认事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件对象（IE浏览器）"><span class="nav-number">6.</span> <span class="nav-text">事件对象（IE浏览器）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件委托"><span class="nav-number">7.</span> <span class="nav-text">事件委托</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">leng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
